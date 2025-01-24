@@ -8,6 +8,8 @@ const Navbar = ({ userdata }) => {
 
   console.log("User data:", userdata);
 
+  /*************  ✨ Codeium Command ⭐  *************/
+  /******  4a72ca35-888a-489e-8480-56591505b967  *******/
   const handleLogout = () => {
     window.open("http://localhost:5000/auth/logout", "_self");
   };
@@ -25,10 +27,17 @@ const Navbar = ({ userdata }) => {
   }
 
   return (
-    <div>
-      <img src={userdata.user.profile_picture} alt="" />
-      <h1>Welcome {userdata.user.display_name}</h1>
-      <ul>
+    <div className="flex border items-center p-4">
+      <div className="flex items-center gap-4">
+        <img
+          src={userdata.user.profile_picture}
+          alt=""
+          className="rounded-full h-10 w-10"
+        />
+        {/* <p>Welcome {userdata.user.display_name}</p> */}
+      </div>
+
+      <ul className="flex gap-4 items-center ml-auto">
         <li>
           <Link to="/">Home</Link>
         </li>

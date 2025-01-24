@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
+import eventsRoutes from "./routes/events.route.js";
 import passport from "passport";
 import session from "express-session"; // Replace cookie-session with express-session
 import configurePassport from "./passport.js";
@@ -49,6 +50,8 @@ app.get("/", (req, res) => {
 
 // Routes hosts the API routes
 app.use("/auth", authRoutes);
+//rout for CRUD events
+app.use("/events", eventsRoutes);
 
 app.listen(5000, () => {
   console.log(`Server is running on port 5000`);

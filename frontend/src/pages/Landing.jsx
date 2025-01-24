@@ -1,9 +1,8 @@
 import React from "react";
-
 const Landing = () => {
   return (
-    <div>
-      <h1>Landing Page</h1>
+    <div className="flex justify-center  ">
+      <h1>landing page </h1>
     </div>
   );
 };

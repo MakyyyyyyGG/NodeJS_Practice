@@ -1,8 +1,9 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import Landing from "./pages/Landing";
+import Home from "./pages/Home";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
@@ -40,7 +41,11 @@ const App = () => {
     <div>
       <Navbar userdata={userdata} />
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route
+          path="/"
+          element={userdata?.success ? <Navigate to="/home" /> : <Landing />}
+        />
+        <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </div>
