@@ -1,43 +1,65 @@
 import React from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import axios from "axios";
-const Home = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    //post data in api with axios
-    try {
-      const res = await axios.post("http://localhost:5000/events/post", data);
-      if (res.status === 200) {
-        console.log(res.data);
-      }
-    } catch (error) {}
+import AddEvent from "@/components/AddEvent";
+import axios from "axios";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+const fetchEvents = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/events/get");
+    console.log("events fetched", res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const Home = () => {
+  const queryClient = useQueryClient();
+  const {
+    data: events,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["events"],
+    queryFn: fetchEvents,
+  });
+
+  const handleEventAdded = () => {
+    queryClient.invalidateQueries({ queryKey: ["events"] });
   };
+
+  if (isPending) return "Loading...";
 
   return (
     <div>
+      <AddEvent onEventAdded={handleEventAdded} />
       <h1>Home</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* register your input into the hook by invoking the "register" function */}
-        <Input {...register("firstname", { required: "This is required" })} />
-        {errors.firstname?.message}
 
-        {/* include validation with required or other standard HTML validation rules */}
-        <Input {...register("description", { required: "This is required" })} />
-        {/* errors will return when field validation fails  */}
-        {errors.description?.message}
-
-        <Button type="submit">Submit</Button>
-      </form>
+      {events?.map((event) => (
+        <div key={event.event_id}>
+          <table className="border w-full">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{event.title}</td>
+                <td>{event.description}</td>
+                <td>{event.start_date}</td>
+                <td>{event.end_date}</td>
+                <td>{event.created}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ))}
     </div>
   );
 };

@@ -16,10 +16,13 @@ const Navbar = ({ userdata }) => {
 
   if (!isAuthenticated) {
     return (
-      <div>
-        <ul>
+      <div className="flex border items-center p-4">
+        <ul className="flex gap-2 items-center ml-auto">
           <li>
-            <Signup />
+            <Signup text="Signup" />
+          </li>
+          <li>
+            <Signup text="Login" />
           </li>
         </ul>
       </div>
